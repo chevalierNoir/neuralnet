@@ -35,6 +35,7 @@ def numeric_gradient(f, x, df, eps):
         
         dx_num_flat[i] = d
         x_flat[i] = orig
+    # dx_num = np.sum(dx_num, axis = 0)
     return dx_num
 
 #Criterion for testing the modules
@@ -53,7 +54,7 @@ def sgd(x, dx, lr, weight_decay = 0):
     if type(x) is list:
         assert len(x) == len(dx), 'Should be the same'
         for _x, _dx in zip(x, dx):
-            sgd(_x, _dx, lr, weight_decay)
+            sgd(_x, _dx, lr)
     else:
         x -= lr * (dx + 2 * weight_decay * x)  
 
@@ -67,7 +68,7 @@ def sgdm(x, dx, lr, alpha = 0.8 , state = None, weight_decay = 0):
             state['v'] = np.zeros(x.shape)
     if type(x) is list:
         for _x, _dx, _state in zip(x, dx, state):
-            sgdm(_x, _dx, lr, alpha, _state, weight_decay)
+            sgdm(_x, _dx, lr, alpha, _state)
     else:
         state['v'] *= alpha
         state['v'] += lr * (dx + 2 * weight_decay * x)  
@@ -84,7 +85,7 @@ def sgdmom(x, dx, lr, alpha = 0, state = None, weight_decay = 0):
             state['tmp'] = np.zeros(x.shape)
     if type(x) is list:
         for _x, _dx, _state in zip(x, dx, state):
-            sgdmom(_x, _dx, lr, alpha, _state, weight_decay)
+            sgdmom(_x, _dx, lr, alpha, _state)
     else:
         state['tmp'] = state['m'].copy()
         state['m'] *= alpha
